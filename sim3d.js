@@ -1,4 +1,4 @@
-/* PlayLab 95 v0.5: fixed WebGL stadium + projected 2D sprite actors. */
+/* PlayLab 95 v0.6: fixed WebGL stadium + event-driven 2D sprite actors. */
 (function () {
   'use strict';
   window.createPlay3D = function (canvas, labelCanvas) {
@@ -30,7 +30,7 @@
     const unit=a=>{const len=Math.hypot(...a)||1;return a.map(n=>n/len);};
     function lookAt(eye,target){const z=unit(sub(eye,target)),x=unit(cross([0,1,0],z)),y=cross(z,x);return new Float32Array([x[0],y[0],z[0],0,x[1],y[1],z[1],0,x[2],y[2],z[2],0,-dot(x,eye),-dot(y,eye),-dot(z,eye),1]);}
     function perspective(fov,aspect,near,far){const f=1/Math.tan(fov/2),nf=1/(near-far);return new Float32Array([f/aspect,0,0,0,0,f,0,0,0,0,(far+near)*nf,-1,0,0,2*far*near*nf,0]);}
-    const view=lookAt([0,28,45],[0,0,-12]);
+    const view=lookAt([0,53,86],[0,0,-15]);
     let viewProj, viewportWidth=0, viewportHeight=0;
     function resize(){const bounds=canvas.getBoundingClientRect();if(!bounds.width)return;const scale=Math.min(window.devicePixelRatio||1,1.7);const w=Math.max(2,Math.floor(bounds.width*scale)),h=Math.max(2,Math.floor(bounds.height*scale));if(w!==canvas.width||h!==canvas.height){canvas.width=w;canvas.height=h;labelCanvas.width=w;labelCanvas.height=h;}viewportWidth=w;viewportHeight=h;gl.viewport(0,0,w,h);viewProj=matMul(perspective(58*Math.PI/180,w/h,0.5,270),view);gl.uniformMatrix4fv(locations.vp,false,viewProj);}
     function model(tx,ty,tz,sx,sy,sz,turn){const c=Math.cos(turn),s=Math.sin(turn);return new Float32Array([c*sx,0,-s*sx,0,0,sy,0,0,s*sz,0,c*sz,0,tx,ty,tz,1]);}
@@ -62,7 +62,7 @@
       return {p,x,z};
     }
     function worldToScreen(x,y,z){const v=[x,y,z,1],c=new Array(4).fill(0);for(let r=0;r<4;r++)for(let k=0;k<4;k++)c[r]+=viewProj[k*4+r]*v[k];if(c[3]<=0)return null;return {x:(c[0]/c[3]*.5+.5)*viewportWidth,y:(.5-c[1]/c[3]*.5)*viewportHeight};}
-    function drawLabels(entries,state,result,t,pass){const h=labelCanvas.getContext('2d');h.clearRect(0,0,viewportWidth,viewportHeight);if(window.PlayLabSprites)window.PlayLabSprites.draw(h,entries,state,t,pass,worldToScreen);const q=Math.min(window.devicePixelRatio||1,1.7);for(const {p,x,z} of entries){const at=worldToScreen(x,3.48,z);if(!at)continue;const size=viewportWidth<700?11*q:10*q;h.font=`900 ${size}px system-ui`;h.textAlign='center';h.lineWidth=2.8*q;h.strokeStyle='#0d2025e8';h.strokeText(p.id==='NICKEL'?'NB':p.id,at.x,at.y);h.fillStyle=p.team==='offense'?'#bcdef7':'#ffb1a3';h.fillText(p.id==='NICKEL'?'NB':p.id,at.x,at.y);}
+    function drawLabels(entries,state,result,t,pass){const h=labelCanvas.getContext('2d');h.clearRect(0,0,viewportWidth,viewportHeight);if(window.PlayLabSprites)window.PlayLabSprites.draw(h,entries,state,t,pass,worldToScreen);const q=Math.min(window.devicePixelRatio||1,1.7);for(const {p,x,z} of entries){const at=worldToScreen(x,p.down?1.24:3.48,z);if(!at)continue;const size=viewportWidth<700?11*q:10*q;h.font=`900 ${size}px system-ui`;h.textAlign='center';h.lineWidth=2.8*q;h.strokeStyle='#0d2025e8';h.strokeText(p.id==='NICKEL'?'NB':p.id,at.x,at.y);h.fillStyle=p.team==='offense'?'#bcdef7':'#ffb1a3';h.fillText(p.id==='NICKEL'?'NB':p.id,at.x,at.y);}
       if(state==='ended'){const title=result||'PLAY COMPLETE';h.fillStyle='#071520db';h.fillRect(viewportWidth*.27,viewportHeight*.43,viewportWidth*.46,viewportHeight*.13);h.fillStyle='#f9d783';h.font=`900 ${Math.max(18,viewportWidth*.025)}px system-ui`;h.textAlign='center';h.fillText(title,viewportWidth/2,viewportHeight*.515);}
     }
     function render(players,pass,t,state,result){resize();if(!viewportWidth)return;
@@ -70,8 +70,7 @@
       field();
       // Depth buffer ensures actual 3D players occlude each other realistically.
       const drawn=players.map(p=>({p,x:worldX(p.y),z:worldZ(p.x)}));
-      const qb=players.find(p=>p.id==='QB');
-      if(pass&&!pass.done){const fraction=Math.max(0,Math.min(1,pass.t/pass.travel));const xx=pass.from.x+(pass.to.x-pass.from.x)*fraction, yy=pass.from.y+(pass.to.y-pass.from.y)*fraction;draw(orb,worldX(yy),2.7+5*Math.sin(Math.PI*fraction),worldZ(xx),.18,.12,.28,col.brown,t*8);}else if(qb&&!pass){draw(orb,worldX(qb.y)-.30,1.26,worldZ(qb.x)-.40,.17,.12,.26,col.brown,.4);}
+      // The ball is rendered once by the perspective-aware sprite overlay.
       drawLabels(drawn,state,result,t,pass);
     }
     return {render,resize};

@@ -1,4 +1,4 @@
-/* PlayLab 95: lightweight fixed-camera 3D renderer. No external dependencies. */
+/* PlayLab 95 v0.5: fixed WebGL stadium + projected 2D sprite actors. */
 (function () {
   'use strict';
   window.createPlay3D = function (canvas, labelCanvas) {
@@ -62,17 +62,17 @@
       return {p,x,z};
     }
     function worldToScreen(x,y,z){const v=[x,y,z,1],c=new Array(4).fill(0);for(let r=0;r<4;r++)for(let k=0;k<4;k++)c[r]+=viewProj[k*4+r]*v[k];if(c[3]<=0)return null;return {x:(c[0]/c[3]*.5+.5)*viewportWidth,y:(.5-c[1]/c[3]*.5)*viewportHeight};}
-    function drawLabels(entries,state,result){const h=labelCanvas.getContext('2d');h.clearRect(0,0,viewportWidth,viewportHeight);const q=Math.min(window.devicePixelRatio||1,1.7);for(const {p,x,z} of entries){const at=worldToScreen(x,2.65,z);if(!at)continue;const size=viewportWidth<700?11*q:10*q;h.font=`900 ${size}px system-ui`;h.textAlign='center';h.lineWidth=2.8*q;h.strokeStyle='#0d2025e8';h.strokeText(p.id==='NICKEL'?'NB':p.id,at.x,at.y);h.fillStyle=p.team==='offense'?'#bcdef7':'#ffb1a3';h.fillText(p.id==='NICKEL'?'NB':p.id,at.x,at.y);}
+    function drawLabels(entries,state,result,t,pass){const h=labelCanvas.getContext('2d');h.clearRect(0,0,viewportWidth,viewportHeight);if(window.PlayLabSprites)window.PlayLabSprites.draw(h,entries,state,t,pass,worldToScreen);const q=Math.min(window.devicePixelRatio||1,1.7);for(const {p,x,z} of entries){const at=worldToScreen(x,3.48,z);if(!at)continue;const size=viewportWidth<700?11*q:10*q;h.font=`900 ${size}px system-ui`;h.textAlign='center';h.lineWidth=2.8*q;h.strokeStyle='#0d2025e8';h.strokeText(p.id==='NICKEL'?'NB':p.id,at.x,at.y);h.fillStyle=p.team==='offense'?'#bcdef7':'#ffb1a3';h.fillText(p.id==='NICKEL'?'NB':p.id,at.x,at.y);}
       if(state==='ended'){const title=result||'PLAY COMPLETE';h.fillStyle='#071520db';h.fillRect(viewportWidth*.27,viewportHeight*.43,viewportWidth*.46,viewportHeight*.13);h.fillStyle='#f9d783';h.font=`900 ${Math.max(18,viewportWidth*.025)}px system-ui`;h.textAlign='center';h.fillText(title,viewportWidth/2,viewportHeight*.515);}
     }
     function render(players,pass,t,state,result){resize();if(!viewportWidth)return;
       gl.clearColor(.055,.115,.12,1);gl.enable(gl.DEPTH_TEST);gl.depthFunc(gl.LEQUAL);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);gl.useProgram(program);gl.uniformMatrix4fv(locations.vp,false,viewProj);
       field();
       // Depth buffer ensures actual 3D players occlude each other realistically.
-      const drawn=players.map(p=>person(p,t));
+      const drawn=players.map(p=>({p,x:worldX(p.y),z:worldZ(p.x)}));
       const qb=players.find(p=>p.id==='QB');
       if(pass&&!pass.done){const fraction=Math.max(0,Math.min(1,pass.t/pass.travel));const xx=pass.from.x+(pass.to.x-pass.from.x)*fraction, yy=pass.from.y+(pass.to.y-pass.from.y)*fraction;draw(orb,worldX(yy),2.7+5*Math.sin(Math.PI*fraction),worldZ(xx),.18,.12,.28,col.brown,t*8);}else if(qb&&!pass){draw(orb,worldX(qb.y)-.30,1.26,worldZ(qb.x)-.40,.17,.12,.26,col.brown,.4);}
-      drawLabels(drawn,state,result);
+      drawLabels(drawn,state,result,t,pass);
     }
     return {render,resize};
   };

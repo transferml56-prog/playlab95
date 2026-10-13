@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="theme-color" content="#0c151d" />
-<title>PlayLab 95 | 3D Football Play Designer v0.4</title>
+<title>PlayLab 95 | Sprite Football Play Designer v0.5</title>
 <style>
 :root{--bg:#0d151e;--panel:#15212d;--panel2:#1a2a37;--edge:#294052;--light:#eaf2f7;--muted:#92a5b5;--yellow:#f4c55e;--blue:#5db7ed;--red:#ec6a65;--green:#84c59b}
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--light);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,select,input{font:inherit}button{cursor:pointer}button:disabled{opacity:.46;cursor:not-allowed}
@@ -48,6 +48,9 @@
 .camera-hud{position:absolute;top:10px;left:12px;background:#101d27db;border:1px solid #657987;padding:7px 10px;border-radius:6px;color:#ffdb89;font-size:11px;font-weight:950;letter-spacing:.6px;pointer-events:none}
 .camera-hud small{color:#d4e2e8;font-size:9px;font-weight:600;margin-left:5px}
 @media(max-width:730px){.camera-hud{top:7px;left:7px;padding:5px 6px;font-size:9px}.camera-hud small{font-size:7px}}
+.pre-snap-banner{position:absolute;top:50px;left:50%;transform:translateX(-50%);padding:9px 18px;background:#0b2227e8;border:1px solid #f4c55e;border-radius:8px;color:#ffe8a4;font-size:11px;letter-spacing:1.8px;font-weight:950;text-align:center;pointer-events:none;white-space:nowrap}
+.pre-snap-banner strong{display:block;color:white;letter-spacing:.1px;margin-top:3px;font-size:12px}
+.pre-snap-banner[hidden]{display:none!important}
 /* If a preview blocks JavaScript, display a static view and instructions. */
 .field-inner canvas{background:#245d41 url(data:image/webp;base64,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) center center/100% 100% no-repeat}
 #scriptNotice{position:absolute;z-index:10;left:12px;top:126px;width:min(335px,calc(100vw - 44px));background:#102332f2;color:#f2f7fa;border:2px solid #efc366;border-radius:12px;padding:16px;box-shadow:0 8px 32px #0008;font-size:14px;line-height:1.45;pointer-events:none}
@@ -58,7 +61,7 @@
 </style>
 </head>
 <body>
-<header class="top"><div class="logo"><div class="crest">P</div><div><div class="brand">PLAYLAB <span>95</span></div><div class="tag">FOOTBALL PLAY DESIGNER</div></div></div><div class="topright"><div class="status-chip">BUILD <b>0.4 3D</b></div><button class="saveTop" id="topSave">SAVE PLAY</button></div></header>
+<header class="top"><div class="logo"><div class="crest">P</div><div><div class="brand">PLAYLAB <span>95</span></div><div class="tag">FOOTBALL PLAY DESIGNER</div></div></div><div class="topright"><div class="status-chip">BUILD <b>0.5 SPRITES</b></div><button class="saveTop" id="topSave">SAVE PLAY</button></div></header>
 <div class="app">
 <aside class="left panel">
  <div class="panel-inner"><p class="eyebrow">01 / OFFENSE</p><p class="sect-title">Call your play</p><p class="description">Pick a play to load its routes. Then customize everything on the field.</p><span class="small-label">Offensive play</span><select id="offensePreset" class="fullSelect"><option value="four">Four Verticals</option><option value="mesh">Mesh Concept</option><option value="slants">Quick Slants</option><option value="flood">Flood Right</option><option value="screen">Halfback Screen</option></select><div class="sepline"></div><span class="small-label">Quarterback target</span><select id="passTarget" class="fullSelect"><option value="AUTO">Automatic (best opening)</option><option value="WR1">WR1</option><option value="WR2">WR2</option><option value="SLOT">Slot</option><option value="TE">Tight end</option><option value="RB">Running back</option></select></div>
@@ -68,7 +71,7 @@
 <main class="main">
  <div class="mainbar"><div class="mainbar-title">THE CHALKBOARD <small id="playLabel">Four Verticals vs. Cover 1 Man</small></div><div class="mode-switch"><button id="moveMode" class="modebtn">Move players</button><button id="routeMode" class="modebtn active">Draw routes</button><button id="panMode" class="modebtn">Pan field</button></div></div>
  <div class="mobile-tools"><div class="mobile-guide">Choose a receiver, then <strong>draw with your finger</strong>. You can also tap to add route points.</div><div class="mobile-controls"><label for="mobilePlayer">RECEIVER</label><select id="mobilePlayer" aria-label="Choose player to draw route"><option value="WR1">WR1</option><option value="SLOT">Slot</option><option value="TE">Tight End</option><option value="WR2">WR2</option><option value="RB">Running Back</option><option value="">Other selected</option></select><button id="mobileUndo" class="smallbtn">Undo</button><button id="mobileClear" class="smallbtn">Clear</button></div><div class="pan-tools"><button id="panLeft" class="smallbtn" aria-label="Show left side of field">◀ Field left</button><span id="panHint">Swipe in Pan field mode to scroll</span><button id="panRight" class="smallbtn" aria-label="Show right side of field">Field right ▶</button></div></div>
- <div class="field-wrap" id="fieldWrap"><div class="sim-3d" id="sim3d"><canvas id="view3d" aria-label="3D quarterback camera showing the entire line of scrimmage"></canvas><canvas id="view3d-labels" aria-hidden="true"></canvas><div class="camera-hud">QB CAMERA <small>FIXED WIDE ANGLE · ALL 22 PLAYERS</small></div></div><div class="field-scroll"><div class="field-inner"><canvas id="field" width="1200" height="680" aria-label="Interactive football field with animated offensive and defensive players"></canvas><div id="scriptNotice" role="status"><strong>Open this game in Safari</strong><p>This file preview is not running the game code. The field below is only a picture.</p><p>PlayLab needs to be opened as a website to draw routes and animate the players.</p></div><div id="tooltip"></div><div class="scorebar"><span class="abbr blue">BLU</span><span class="center">1ST &amp; 10 &nbsp; • &nbsp; PLAYLAB</span><span class="abbr red">RED</span></div><div id="flash"></div></div></div></div>
+ <div class="field-wrap" id="fieldWrap"><div class="sim-3d" id="sim3d"><canvas id="view3d" aria-label="3D quarterback camera showing the entire line of scrimmage"></canvas><canvas id="view3d-labels" aria-hidden="true"></canvas><div class="camera-hud">QB CAMERA <small>FIXED · 8-WAY ANIMATED SPRITES</small></div><div class="pre-snap-banner" id="preSnapBanner" hidden>PRE-SNAP <strong>Set at the line</strong></div></div><div class="field-scroll"><div class="field-inner"><canvas id="field" width="1200" height="680" aria-label="Interactive football field with animated offensive and defensive players"></canvas><div id="scriptNotice" role="status"><strong>Open this game in Safari</strong><p>This file preview is not running the game code. The field below is only a picture.</p><p>PlayLab needs to be opened as a website to draw routes and animate the players.</p></div><div id="tooltip"></div><div class="scorebar"><span class="abbr blue">BLU</span><span class="center">1ST &amp; 10 &nbsp; • &nbsp; PLAYLAB</span><span class="abbr red">RED</span></div><div id="flash"></div></div></div></div>
  <div class="bottom-control"><button class="snap" id="snap">▶ &nbsp; RUN IN 3D</button><button class="reset" id="reset">↺ &nbsp; RESET</button><button class="reset" id="pause" disabled>Ⅱ &nbsp; PAUSE</button><span class="metric">SIMULATION <strong id="timer">0.0s</strong></span></div>
  <div class="event-log"><div id="logdot" class="indicator"></div><div><div class="logtitle" id="logtitle">Ready at the line of scrimmage</div><div class="logdesc" id="logdesc">Pick a player to edit assignments, or snap the ball to test your play.</div></div></div>
  <div class="legend"><span><b class="ob"></b> Blue offense</span><span><b class="db"></b> Red defense</span><span style="color:#e9c86f">—</span> Player routes</div>
@@ -76,9 +79,193 @@
 <aside class="right panel">
  <div class="panel-inner"><p class="eyebrow">PLAYER INSPECTOR</p><div class="selectedTop"><div id="avatar" class="avatar offense">WR1</div><div><div class="selname" id="selname">Wide Receiver 1</div><div class="selteam" id="selteam">Blue offense · Route runner</div></div></div><p id="playerInfo" class="action-note">Drag a route with your finger or tap to add waypoints.</p><div id="offActions"><span class="small-label">Quick routes</span><div class="route-actions" id="routeButtons"><button class="route-btn" data-route="go">Go</button><button class="route-btn" data-route="slant">Slant</button><button class="route-btn" data-route="post">Post</button><button class="route-btn" data-route="out">Out</button><button class="route-btn" data-route="curl">Curl</button><button class="route-btn" data-route="cross">Cross</button></div><div class="sepline"></div><div class="pillrow"><button class="smallbtn" id="undoRoute">Undo point</button><button class="smallbtn" id="clearRoute">Clear route</button></div></div><div id="defActions" style="display:none"><span class="small-label">Defensive assignment</span><select id="defAssignment" class="fullSelect"><option value="man">Man coverage</option><option value="zone">Zone coverage</option><option value="rush">Pass rush / blitz</option></select><p class="hintline">In man coverage, defenders follow their matchup. In zone, they react to receivers entering their area.</p></div></div>
  <div class="panel-inner"><p class="eyebrow">YOUR PLAYBOOK</p><p class="sect-title">Saved plays</p><div id="savedList" class="playbooklist"><p class="description">No saved plays yet.</p></div><div class="savebuttons"><button id="save" class="tbutton">Save play</button><button id="export" class="tbutton">Export JSON</button></div><input type="file" id="importFile" accept="application/json,.json" hidden/><button id="import" class="smallbtn" style="width:100%;margin-top:8px">Import saved play</button></div>
- <div class="panel-inner"><p class="eyebrow">WHAT'S IN THIS BUILD</p><p class="description" style="margin-bottom:0">22 animated players, custom routes, drag-and-drop formations, defensive assignments, passing, blocking, and basic coverage. Includes one fixed wide-angle 3D camera behind the quarterback during the play. This is a playable prototype, not a full physics-based football engine.</p></div>
+ <div class="panel-inner"><p class="eyebrow">WHAT'S IN THIS BUILD</p><p class="description" style="margin-bottom:0">22 animated players, custom routes, drag-and-drop formations, defensive assignments, passing, blocking, and basic coverage. Includes a fixed 3D field with 8-way directional player sprites, animated pre-snap stances, running, blocking and passing. This is a playable prototype, not a full physics-based football engine.</p></div>
 </aside>
 </div><footer class="tinyFooter">PLAYLAB 95 is an original, independently built prototype inspired by classic PC football play designers. Design from above, then run each play in the fixed wide-angle 3D quarterback view.</footer>
+<script>
+/* PlayLab 95 v0.5: original procedural, directional animated football sprites.
+   No third-party or copyrighted game art is embedded. */
+(function () {
+  'use strict';
+  const CACHE = new Map();
+  const BASE_W = 84, BASE_H = 120;
+  const palette = {
+    offense: { jersey: '#2679ad', shadow: '#16466f', light: '#68c8ee', helmet: '#81d6fb', helmetDark: '#23648b', pants: '#d9e1e8', trim: '#e8f4fc', sock: '#f6f9ff' },
+    defense: { jersey: '#b53b3d', shadow: '#6c2029', light: '#f37f77', helmet: '#eb6c63', helmetDark: '#913139', pants: '#ded9d6', trim: '#ffcfb7', sock: '#fff2e6' }
+  };
+  function fillEllipse(g,x,y,rx,ry,color) {g.fillStyle=color;g.beginPath();g.ellipse(x,y,Math.max(.1,rx),Math.max(.1,ry),0,0,Math.PI*2);g.fill();}
+  function stroke(g,x1,y1,x2,y2,w,color) {g.strokeStyle=color;g.lineWidth=w;g.lineCap='round';g.beginPath();g.moveTo(x1,y1);g.lineTo(x2,y2);g.stroke();}
+  function polygon(g,points,fill,outline='#162433') {g.beginPath();g.moveTo(points[0][0],points[0][1]);for(const p of points.slice(1))g.lineTo(p[0],p[1]);g.closePath();g.fillStyle=fill;g.fill();if(outline){g.lineWidth=2;g.strokeStyle=outline;g.stroke();}}
+  function head(g,side,back,p) {
+    const front = side === 'front';
+    fillEllipse(g,42,23,16,16,'#162537');
+    fillEllipse(g,41,21,15.4,15.2,p.helmetDark);
+    fillEllipse(g,39,18,13.5,13.2,p.helmet);
+    fillEllipse(g,36.5,13,7.6,3.1,'#ffffff63');
+    if(front){
+      polygon(g,[[29,23],[55,23],[52,35],[32,35]],'#a66e4a');
+      stroke(g,27,25,57,25,3.5,'#e9f2f6');
+      stroke(g,30,32,55,32,2.4,'#d5dfe8');
+      stroke(g,33,23,33,34,2,'#ebf5fc');stroke(g,51,23,51,34,2,'#ebf5fc');
+    }else if(side==='side'){
+      fillEllipse(g,51,27,8,9,'#936348');
+      polygon(g,[[51,22],[63,24],[61,29],[54,31]],'#e5edf2');
+      stroke(g,54,24,62,24,2,'#d9e8ec');stroke(g,53,30,63,30,2,'#d9e8ec');
+    }else{
+      stroke(g,41,7,41,21,3.6,'#f5f8fc');
+      polygon(g,[[31,27],[50,27],[46,32],[34,32]],p.helmetDark,null);
+    }
+  }
+  // Lightweight sprite creation is performed once per team, role, direction, state and frame.
+  function createSprite(team,kind,direction,action,frame,number) {
+    const c=document.createElement('canvas');c.width=BASE_W;c.height=BASE_H;
+    const g=c.getContext('2d');
+    const p=palette[team];
+    const phase=(frame%6)*Math.PI/3;
+    const isRun=action==='run' || action==='dropback';
+    const isBlock=action==='block';
+    const isCrouch=action==='crouch';
+    const isPass=action==='pass';
+    const isCatch=action==='catch';
+    const isHit=action==='tackle';
+    const isReady=action==='ready' || action==='set';
+    const depth=direction;
+    const front=(depth===3 || depth===4 || depth===5);
+    const back=(depth===0 || depth===1 || depth===7);
+    const side=(depth===2 || depth===6);
+    const drawnSide=side?'side':front?'front':'back';
+    const bounce=isRun?Math.abs(Math.sin(phase))*3:isReady?Math.sin(phase*.68)*.8:0;
+    const stride=isRun?Math.sin(phase)*12:0;
+    const armSwing=isRun?Math.sin(phase)*13:0;
+    const squat=isCrouch?15:isBlock?8:isHit?10:0;
+    const tilt=isBlock?-5:isPass?3:isHit?13:0;
+    const bodyY=bounce+squat;
+    const footLeft=106+(isCrouch?-4:0), footRight=106+(isCrouch?-4:0);
+    g.save();g.translate(42,58+bodyY);g.rotate(tilt*Math.PI/180);g.translate(-42,-58-bodyY);
+    // Lower body. Dark outlines and separate knee joints maintain definition at small sizes.
+    const hipY=72+bodyY,waistY=64+bodyY;
+    const legs=[
+      {sx:35, kneeX:33+stride*.65,kneeY:88+bodyY-stride*.10,footX:29+stride,footY:footLeft+bodyY-Math.max(0,stride)*.52},
+      {sx:49, kneeX:52-stride*.65,kneeY:88+bodyY+stride*.10,footX:55-stride,footY:footRight+bodyY-Math.max(0,-stride)*.52}
+    ];
+    for(const l of legs){
+      stroke(g,l.sx,hipY,l.kneeX,l.kneeY,13,'#182737');stroke(g,l.sx,hipY,l.kneeX,l.kneeY,9,p.pants);
+      stroke(g,l.kneeX,l.kneeY,l.footX,l.footY,10,'#152638');stroke(g,l.kneeX,l.kneeY,l.footX,l.footY,7,p.sock);
+      fillEllipse(g,l.footX+1,l.footY+1,8,3.7,'#172532');
+      stroke(g,l.kneeX+1,l.kneeY+6,l.footX+1,l.footY-4,1.7,'#9bb4ba');
+    }
+    polygon(g,[[28,62+bodyY],[56,62+bodyY],[55,76+bodyY],[30,76+bodyY]],p.pants);
+    polygon(g,[[31,64+bodyY],[53,64+bodyY],[52,70+bodyY],[31,70+bodyY]],p.shadow,null);
+    // Back arm, partly hidden by the shoulder pads.
+    const shoulderY=42+bodyY, elbowY=60+bodyY,handY=77+bodyY;
+    let lArm=armSwing,rArm=-armSwing;
+    if(isBlock){lArm=-8+Math.sin(phase)*2;rArm=8-Math.sin(phase)*2;}
+    if(isPass){lArm=frame>=2?12:0;rArm=frame>=2?-32:-12;}
+    if(isCatch){lArm=-18;rArm=18;}
+    if(isCrouch){lArm=-3;rArm=3;}
+    const arms=[{s:27,bend:20-lArm*.44,end:22-lArm*.55,raise:isPass&&frame>=2?0:0},
+                {s:57,bend:64-rArm*.44,end:64-rArm*.55,raise:isPass?(frame>=2?-38:frame===1?-18:0):0}];
+    const a0=arms[0];
+    stroke(g,a0.s,shoulderY+3,a0.bend,elbowY-lArm*.43,14,'#162737');
+    stroke(g,a0.s,shoulderY+3,a0.bend,elbowY-lArm*.43,10,p.jersey);
+    stroke(g,a0.bend,elbowY-lArm*.43,a0.end,handY-lArm*.6,10,'#152331');
+    stroke(g,a0.bend,elbowY-lArm*.43,a0.end,handY-lArm*.6,7,p.trim);
+    fillEllipse(g,a0.end,handY-lArm*.6,4.3,5,'#ad794f');
+    // Shaped shoulder pads with the tapered jersey body.
+    polygon(g,[[31,37+bodyY],[52,37+bodyY],[60,47+bodyY],[53,69+bodyY],[30,69+bodyY],[24,46+bodyY]],p.shadow);
+    polygon(g,[[29,38+bodyY],[53,38+bodyY],[57,47+bodyY],[51,66+bodyY],[31,66+bodyY],[27,47+bodyY]],p.jersey,null);
+    polygon(g,[[24,40+bodyY],[34,38+bodyY],[35,51+bodyY],[23,51+bodyY]],p.light);
+    polygon(g,[[50,38+bodyY],[59,41+bodyY],[60,51+bodyY],[49,51+bodyY]],p.light);
+    stroke(g,29,50+bodyY,55,50+bodyY,1.5,p.shadow);
+    // Player number remains distinguishable at larger sizes.
+    g.save();g.fillStyle=front?'#ffffff':'#eaf9ff';g.strokeStyle=p.shadow;
+    g.font='bold 19px Arial Narrow,Arial,sans-serif';g.textAlign='center';g.textBaseline='middle';
+    g.lineWidth=2.0;const label=String(number||'00');
+    g.strokeText(label,42,56+bodyY);g.fillText(label,42,56+bodyY);g.restore();
+    const a1=arms[1];
+    const elbow1=isPass?a1.bend+4:a1.bend;
+    const elY1=isPass?elbowY+a1.raise*.48:elbowY-rArm*.43;
+    const handY1=isPass?handY+a1.raise:handY-rArm*.6;
+    stroke(g,a1.s,shoulderY+3,elbow1,elY1,14,'#172837');
+    stroke(g,a1.s,shoulderY+3,elbow1,elY1,10,p.jersey);
+    stroke(g,elbow1,elY1,a1.end,handY1,10,'#142333');
+    stroke(g,elbow1,elY1,a1.end,handY1,7,p.trim);
+    fillEllipse(g,a1.end,handY1,4.7,5.0,'#ad794f');
+    if(isPass&&frame<3){fillEllipse(g,a1.end+3,handY1-5,5,7,'#864b22');stroke(g,a1.end+1,handY1-7,a1.end+5,handY1-7,1.8,'#f4f2e4');}
+    // Neck and helmet, with a face-mask for front/side silhouettes.
+    polygon(g,[[36,32+bodyY],[49,32+bodyY],[50,41+bodyY],[35,41+bodyY]],'#a76b49',null);
+    g.save();g.translate(0,bodyY);head(g,drawnSide,back,p);g.restore();
+    if(kind==='lineman'&&isCrouch){
+      // Low center of gravity, hands near the turf.
+      stroke(g,23,70+bodyY,21,97+bodyY,5,'#a87551');
+    }
+    g.restore();
+    return c;
+  }
+  function directionIndex(angle) {
+    // Editor heading 0 goes away from the fixed camera; PI comes toward it.
+    const a=((Number.isFinite(angle)?angle:0)%(2*Math.PI)+2*Math.PI)%(2*Math.PI);
+    return Math.round(a/(Math.PI/4))%8;
+  }
+  function actionFor(p,state,t,pass) {
+    if(state==='presnap'){
+      if(p.id==='QB')return 'set';
+      if(['C','LT','LG','RG','RT','DT1','DT2','DE1','DE2'].includes(p.id))return 'crouch';
+      return 'ready';
+    }
+    if(p.id==='QB') {
+      if(!pass&&t>=2.33&&t<=2.85)return 'pass';
+      if(p.moving)return 'dropback';
+      return 'set';
+    }
+    if(p.blocked)return 'block';
+    if(['C','LT','LG','RG','RT'].includes(p.id))return 'block';
+    if(p.moving)return 'run';
+    if(pass&&pass.done&&pass.target===p.id)return 'catch';
+    return 'ready';
+  }
+  function draw(ctx,entries,state,time,pass,project) {
+    const arranged=[];
+    for(const item of entries){
+      const foot=project(item.x,.07,item.z);
+      const top=project(item.x,3.15,item.z);
+      if(!foot||!top)continue;
+      const height=Math.min(155,Math.max(16,(foot.y-top.y)*1.18));
+      const width=height*.68;
+      arranged.push({item,foot,height,width});
+    }
+    arranged.sort((a,b)=>a.foot.y-b.foot.y);
+    for(const {item,foot,height,width} of arranged) {
+      const p=item.p, team=p.team==='offense'?'offense':'defense';
+      const kind=['LT','LG','C','RG','RT'].includes(p.id)?'lineman':p.id==='QB'?'qb':'skill';
+      const action=actionFor(p,state,time,pass);
+      const fps=action==='run'||action==='dropback'?10:action==='block'?7:action==='pass'?9:3;
+      const frames=action==='pass'?4:action==='run'||action==='dropback'?6:action==='block'?4:3;
+      const frame=Math.floor((time+(p.phase||0)*.13)*fps)%frames;
+      const facing=directionIndex(p.angle);
+      const key=[team,kind,facing,action,frame,p.num].join(':');
+      let image=CACHE.get(key);
+      if(!image){image=createSprite(team,kind,facing,action,frame,p.num);CACHE.set(key,image);}
+      ctx.save();
+      ctx.fillStyle='#081f19a0';ctx.beginPath();ctx.ellipse(foot.x+1,foot.y+1,width*.37,height*.073,-.14,0,Math.PI*2);ctx.fill();
+      ctx.drawImage(image,foot.x-width/2,foot.y-height,width,height);
+      ctx.restore();
+    }
+    // Throw arc uses the same fixed camera projection as the on-field figures.
+    if(pass&&!pass.done){
+      const fraction=Math.max(0,Math.min(1,pass.t/pass.travel));
+      const xx=pass.from.x+(pass.to.x-pass.from.x)*fraction;
+      const yy=pass.from.y+(pass.to.y-pass.from.y)*fraction;
+      const shot=project((yy-345)*.115,2.8+5*Math.sin(Math.PI*fraction),(488-xx)*.115);
+      if(shot){ctx.save();ctx.translate(shot.x,shot.y);ctx.rotate(time*12);
+        fillEllipse(ctx,0,0,7,4,'#8d4b25');stroke(ctx,-2,-1,2,1,1.2,'#fffbeb');ctx.restore();}
+    }
+    if(CACHE.size>1200)CACHE.clear();
+  }
+  window.PlayLabSprites={draw};
+})();
+
+</script>
 <script src="sim3d.js"></script>
 <script>
 (()=>{
@@ -93,12 +280,12 @@ const defenseData=[['CB1',590,131,24,'man','WR1'],['NICKEL',555,228,21,'man','SL
 const offenseNames=['WR1','SLOT','LT','LG','C','RG','RT','TE','WR2','QB','RB'];
 const runners=['WR1','SLOT','TE','WR2','RB'];
 const linemen=['LT','LG','C','RG','RT'];
-let players=[],selectedId='WR1',toolMode='route',editRoutes=true,state='edit',clock=0,last=0,paused=false,pass=null,result='',currentPlay='Four Verticals',gameMessage='',messageUntil=0,drag=null,hover=null,completion=null,stroke=null,panDrag=null;
+let players=[],selectedId='WR1',toolMode='route',editRoutes=true,state='edit',clock=0,preSnapElapsed=0,simGeneration=0,last=0,paused=false,pass=null,result='',currentPlay='Four Verticals',gameMessage='',messageUntil=0,drag=null,hover=null,completion=null,stroke=null,panDrag=null;
 const clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
 const d=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
 const get=id=>players.find(p=>p.id===id);
 const alive=()=>state==='running'&&!paused;
-function makePlayers(){players=[];for(const [id,x,y,num] of offenseData)players.push({id,x,y,startX:x,startY:y,num,team:'offense',route:[],speed:id==='QB'?80:(linemen.includes(id)?52: id==='RB'?125:130),angle:0,phase:Math.random()*5,wp:0,blocked:false});for(const [id,x,y,num,assignment,match] of defenseData)players.push({id,x,y,startX:x,startY:y,num,team:'defense',route:[],assignment,match,zoneX:x,zoneY:y,speed:['DT1','DT2','DE1','DE2'].includes(id)?88:117,angle:Math.PI,phase:Math.random()*6,wp:0,blocked:false});}
+function makePlayers(){players=[];for(const [id,x,y,num] of offenseData)players.push({id,x,y,startX:x,startY:y,num,team:'offense',route:[],speed:id==='QB'?80:(linemen.includes(id)?52: id==='RB'?125:130),angle:0,phase:Math.random()*5,wp:0,blocked:false,moving:false});for(const [id,x,y,num,assignment,match] of defenseData)players.push({id,x,y,startX:x,startY:y,num,team:'defense',route:[],assignment,match,zoneX:x,zoneY:y,speed:['DT1','DT2','DE1','DE2'].includes(id)?88:117,angle:Math.PI,phase:Math.random()*6,wp:0,blocked:false,moving:false});}
 function routeFrom(p,type){const x=p.startX,y=p.startY;const dir=(y<H/2)?1:-1;let coords=[];const f=(dx,dy)=>[clamp(x+dx,35,1150),clamp(y+dy,86,H-76)];switch(type){case'go':coords=[f(110,0),f(280,0),f(445,0)];break;case'slant':coords=[f(38,0),f(200,dir*100),f(355,dir*125)];break;case'post':coords=[f(100,0),f(275,dir*135),f(415,dir*200)];break;case'out':coords=[f(105,0),f(130,-dir*105),f(190,-dir*108)];break;case'curl':coords=[f(135,0),f(160,0),f(112,dir*14)];break;case'cross':coords=[f(40,0),f(95,dir*170),f(185,dir*275)];break;case'flat':coords=[f(70,-dir*60),f(115,-dir*120)];break;case'wheel':coords=[f(40,-dir*95),f(170,-dir*125),f(335,-dir*135)];break;case'block':coords=[];break;}return coords.map(([x,y])=>({x,y}));}
 function assignRoute(id,type){const p=get(id);if(p){p.route=routeFrom(p,type);updateInspector();}}
 function loadOffense(name){if(state==='running')resetSim();const presets={four:{WR1:'go',SLOT:'go',TE:'go',WR2:'go',RB:'flat'},mesh:{WR1:'post',SLOT:'cross',TE:'cross',WR2:'post',RB:'flat'},slants:{WR1:'slant',SLOT:'slant',TE:'slant',WR2:'slant',RB:'flat'},flood:{WR1:'go',SLOT:'out',TE:'out',WR2:'post',RB:'wheel'},screen:{WR1:'go',SLOT:'slant',TE:'block',WR2:'post',RB:'flat'}};Object.entries(presets[name]||presets.four).forEach(([id,r])=>assignRoute(id,r));currentPlay={four:'Four Verticals',mesh:'Mesh Concept',slants:'Quick Slants',flood:'Flood Right',screen:'Halfback Screen'}[name];updateLabel();render();}
@@ -109,11 +296,29 @@ function flash(text,seconds=1.3){$('flash').textContent=text;$('flash').style.di
 function updateInspector(){const p=get(selectedId);if(!p)return;const off=p.team==='offense';$('avatar').textContent=p.id==='NICKEL'?'N':p.id;$('avatar').className='avatar '+(off?'offense':'defense');$('selname').textContent=labelMap[p.id];$('selteam').textContent=off?'Blue offense · '+(linemen.includes(p.id)?'Pass protection':p.id==='QB'?'Quarterback':'Route runner'):'Red defense · '+p.assignment.toUpperCase();$('offActions').style.display=off?'block':'none';$('defActions').style.display=off?'none':'block';$('defAssignment').value=p.assignment||'man';$('playerInfo').textContent=off?(linemen.includes(p.id)?'Linemen block nearby pass rushers automatically. Drag the player to change alignment.':p.id==='QB'?'The quarterback drops back, reads coverage, and throws. Drag to adjust his starting position.':`Route points: ${p.route.length}. Drag a route with your finger, or tap to add points. Use Move players to change alignment.`):'Choose man, zone, or blitz. Drag to adjust starting alignment.';}
 function select(id){selectedId=id;if($('mobilePlayer'))$('mobilePlayer').value=runners.includes(id)?id:'';updateInspector();render();}
 function setMode(mode){if(state==='running')return;toolMode=mode;stroke=null;drag=null;panDrag=null;$('moveMode').classList.toggle('active',mode==='move');$('routeMode').classList.toggle('active',mode==='route');$('panMode').classList.toggle('active',mode==='pan');const msg={route:['Drawing routes','Pick a receiver, then drag your finger on the field to draw a route. Tap to add individual points.'],move:['Moving formations','Drag any blue or red player to set his starting spot.'],pan:['Panning the field','Swipe left or right on the field to view more of it. Switch back to Draw routes to edit.']}[mode];setStatus(msg[0],msg[1]);render();}
-function resetSim(){$('fieldWrap').classList.remove('playing-3d');stroke=null;panDrag=null;drag=null;state='edit';paused=false;clock=0;pass=null;completion=null;result='';players.forEach(p=>{p.x=p.startX;p.y=p.startY;p.wp=0;p.blocked=false;});$('snap').textContent='▶   RUN IN 3D';$('snap').disabled=false;$('pause').disabled=true;$('pause').textContent='Ⅱ   PAUSE';$('timer').textContent='0.0s';$('flash').style.display='none';messageUntil=0;setStatus('Ready at the line of scrimmage','Edit a route or press SNAP THE BALL to watch the play.');render();}
-function snap(){if(state==='running'){return;}resetSim();if(!threeD&&window.createPlay3D)threeD=window.createPlay3D($('view3d'),$('view3d-labels'));if(threeD){$('fieldWrap').classList.add('playing-3d');}else{setStatus('3D display unavailable','Your browser could not start WebGL. The overhead simulation remains available.');}state='running';$('snap').disabled=true;$('pause').disabled=false;clock=0;pass=null;completion=null;last=performance.now();flash('HIKE!',.6);setStatus(threeD?'Ball is live':'Overhead fallback',threeD?'The wide-angle QB camera shows all 22 players.':'WebGL is unavailable in this browser. The overhead simulation remains available.',true);requestAnimationFrame(frame);}
-function moveTo(p,x,y,dt,speed=p.speed){const dx=x-p.x,dy=y-p.y,dist=Math.hypot(dx,dy);if(dist<.1)return;p.angle=Math.atan2(dy,dx);const step=Math.min(dist,speed*dt);p.x+=dx/dist*step;p.y+=dy/dist*step;}
+function resetSim(){simGeneration++;$('fieldWrap').classList.remove('playing-3d');$('preSnapBanner').hidden=true;preSnapElapsed=0;stroke=null;panDrag=null;drag=null;state='edit';paused=false;clock=0;pass=null;completion=null;result='';players.forEach(p=>{p.x=p.startX;p.y=p.startY;p.wp=0;p.blocked=false;p.moving=false;});$('snap').textContent='▶   RUN IN 3D';$('snap').disabled=false;$('pause').disabled=true;$('pause').textContent='Ⅱ   PAUSE';$('timer').textContent='0.0s';$('flash').style.display='none';messageUntil=0;setStatus('Ready at the line of scrimmage','Edit a route or press SNAP THE BALL to watch the play.');render();}
+function snap(){
+ if(state==='running'||state==='presnap')return;
+ resetSim();
+ if(!threeD&&window.createPlay3D)threeD=window.createPlay3D($('view3d'),$('view3d-labels'));
+ if(threeD)$('fieldWrap').classList.add('playing-3d');
+ state=threeD?'presnap':'running';
+ $('snap').disabled=true;
+ $('pause').disabled=!!threeD;
+ clock=0;preSnapElapsed=0;pass=null;completion=null;last=performance.now();
+ if(threeD){
+   $('preSnapBanner').hidden=false;
+   setStatus('Pre-snap formation','Watch players settle into their stances. The ball will snap automatically.',false);
+ }else{
+   flash('HIKE!',.6);
+   setStatus('Overhead fallback','WebGL is unavailable; the overhead play simulation still works.',true);
+ }
+ const generation=simGeneration;
+ requestAnimationFrame(now=>frame(now,generation));
+}
+function moveTo(p,x,y,dt,speed=p.speed){const dx=x-p.x,dy=y-p.y,dist=Math.hypot(dx,dy);if(dist<.1)return;p.angle=Math.atan2(dy,dx);const step=Math.min(dist,speed*dt);p.x+=dx/dist*step;p.y+=dy/dist*step;p.moving=true;}
 function chaseReceiver(p,dt){if(p.route.length===0)return;let t=p.route[p.wp]||p.route[p.route.length-1];if(!t)return;moveTo(p,t.x,t.y,dt);if(d(p,t)<9&&p.wp<p.route.length-1)p.wp++;}
-function update(dt){if(!alive())return;clock+=dt;$('timer').textContent=clock.toFixed(1)+'s';const qb=get('QB');
+function update(dt){if(!alive())return;clock+=dt;players.forEach(p=>p.moving=false);$('timer').textContent=clock.toFixed(1)+'s';const qb=get('QB');
  // QB drops back; route runners execute their individually drawn paths.
  if(clock<1.5)moveTo(qb,qb.startX-70,qb.startY,dt,58);
  for(const p of players.filter(p=>p.team==='offense'&&p.id!=='QB')){if(linemen.includes(p.id)){p.angle=0;continue;}if(p.route.length){chaseReceiver(p,dt);}else if(p.id==='RB')moveTo(p,p.startX+35,p.startY,dt);}
@@ -143,7 +348,21 @@ function resolvePass(){const target=get(pass.target);const remaining=d(target,pa
  else if(defendersAtBall.length&&Math.random()<.18){finish('INTERCEPTED!',`${defendersAtBall[0].id} picked off the pass intended for ${target.id}.`);}
  else finish('INCOMPLETE',`${target.id} could not secure the pass${nearby.length?' in traffic':''}.`);}
 function finish(title,desc){state='ended';result=title;flash(title,300);$('snap').disabled=false;$('snap').textContent='▶   RUN AGAIN';$('pause').disabled=true;setStatus(title,desc,false);}
-function frame(now){if(state!=='running')return;const dt=clamp((now-last)/1000,0,.04);last=now;if(!paused)update(dt);render();if(state==='running')requestAnimationFrame(frame);}
+function frame(now,generation){
+ if(generation!==simGeneration||(state!=='running'&&state!=='presnap'))return;
+ const dt=clamp((now-last)/1000,0,.04);last=now;
+ if(state==='presnap'){
+   preSnapElapsed+=dt;
+   if(preSnapElapsed>=2.0){
+     state='running';clock=0;preSnapElapsed=0;
+     $('preSnapBanner').hidden=true;$('pause').disabled=false;
+     flash('HIKE!',.6);
+     setStatus('Ball is live','The fixed QB camera tracks 22 animated directional sprites.',true);
+   }
+ }else if(!paused)update(dt);
+ render();
+ if(generation===simGeneration&&(state==='running'||state==='presnap'))requestAnimationFrame(n=>frame(n,generation));
+}
 // Football field, player sprites and route artwork, all procedural, no images required.
 function fieldBase(){ctx.clearRect(0,0,W,H);ctx.fillStyle='#245d41';ctx.fillRect(0,0,W,H);
  const top=65,bottom=625;for(let x=40,i=0;x<W+80;x+=80,i++){ctx.fillStyle=i%2?'#276548':'#286c4d';ctx.fillRect(x,top,80,bottom-top);}for(let x=40;x<W;x+=80){ctx.fillStyle='#f0f6ed';ctx.globalAlpha=.57;ctx.fillRect(x,top,2,bottom-top);ctx.globalAlpha=1;}
@@ -177,7 +396,7 @@ function drawPlayer(p){ctx.save();ctx.translate(p.x,p.y);let a=p.angle;if(state=
  if(p.id===selectedId&&state!=='running'){ctx.save();ctx.strokeStyle='#f4cd70';ctx.lineWidth=2;ctx.setLineDash([5,4]);ctx.beginPath();ctx.arc(p.x,p.y,28,0,Math.PI*2);ctx.stroke();ctx.restore();}
  if(state==='edit'||state==='ended'){ctx.save();ctx.font='900 11px system-ui';const short=p.id==='NICKEL'?'NCB':p.id;const width=Math.max(28,ctx.measureText(short).width+12);ctx.fillStyle=p.team==='offense'?'#122d43dc':'#55282add';ctx.strokeStyle=p.team==='offense'?'#77b5d6':'#d78178';ctx.lineWidth=1;ctx.beginPath();ctx.roundRect(p.x-width/2,p.y-39,width,20,5);ctx.fill();ctx.stroke();ctx.textAlign='center';ctx.fillStyle='#fff';ctx.fillText(short,p.x,p.y-25);ctx.restore();}}
 function ballArt(){if(pass&&!pass.done){ctx.save();ctx.translate(pass.x,pass.y);ctx.rotate(.5+clock*13);ctx.fillStyle='#764325';ctx.strokeStyle='#fff0c0';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(0,0,10,6,0,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.beginPath();ctx.moveTo(-3,-3);ctx.lineTo(3,3);ctx.strokeStyle='white';ctx.stroke();ctx.restore();}else if(!pass&&state==='running'){const qb=get('QB');ctx.save();ctx.fillStyle='#9b642c';ctx.beginPath();ctx.ellipse(qb.x+12,qb.y+10,7,4,0,0,Math.PI*2);ctx.fill();ctx.restore();}}
-function render(){if(threeD&&(state==='running'||state==='ended')){threeD.render(players,pass,clock,state,result);return;}fieldBase();routeArt();if(stroke&&stroke.moved&&state!=='running'){const p=get(stroke.id);if(p&&stroke.points.length){ctx.save();ctx.strokeStyle='#ffd47a';ctx.lineWidth=4;ctx.lineCap='round';ctx.lineJoin='round';ctx.beginPath();ctx.moveTo(p.startX,p.startY);for(const q of stroke.points)ctx.lineTo(q.x,q.y);ctx.stroke();ctx.restore();}}const order=[...players].sort((a,b)=>a.y-b.y);for(const p of order)drawPlayer(p);ballArt();if(state==='ended'){ctx.save();ctx.fillStyle='#091722c9';ctx.fillRect(360,283,480,110);ctx.fillStyle='#f9d67e';ctx.font='950 30px system-ui';ctx.textAlign='center';ctx.fillText(result,600,334);ctx.fillStyle='#d7e6ed';ctx.font='600 13px system-ui';ctx.fillText('Press RUN AGAIN to replay',600,367);ctx.restore();}}
+function render(){if(threeD&&(state==='running'||state==='ended'||state==='presnap'))threeD.render(players,pass,state==='presnap'?preSnapElapsed:clock,state,result);fieldBase();routeArt();if(stroke&&stroke.moved&&state!=='running'){const p=get(stroke.id);if(p&&stroke.points.length){ctx.save();ctx.strokeStyle='#ffd47a';ctx.lineWidth=4;ctx.lineCap='round';ctx.lineJoin='round';ctx.beginPath();ctx.moveTo(p.startX,p.startY);for(const q of stroke.points)ctx.lineTo(q.x,q.y);ctx.stroke();ctx.restore();}}const order=[...players].sort((a,b)=>a.y-b.y);for(const p of order)drawPlayer(p);ballArt();if(state==='ended'){ctx.save();ctx.fillStyle='#091722c9';ctx.fillRect(360,283,480,110);ctx.fillStyle='#f9d67e';ctx.font='950 30px system-ui';ctx.textAlign='center';ctx.fillText(result,600,334);ctx.fillStyle='#d7e6ed';ctx.font='600 13px system-ui';ctx.fillText('Press RUN AGAIN to replay',600,367);ctx.restore();}}
 function pos(e){const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)*(W/r.width),y:(e.clientY-r.top)*(H/r.height)};}
 function hit(x,y){let min=34,id=null;for(const p of players){const dd=Math.hypot(x-p.x,y-p.y);if(dd<min){min=dd;id=p.id;}}return id;}
 // Input handling: a tap selects players or adds a single waypoint; a drag draws a whole route.
